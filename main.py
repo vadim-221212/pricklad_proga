@@ -1,15 +1,21 @@
-from bs4 import  BeautifulSoup
+from bs4 import BeautifulSoup
 import re
 
 
-with open('html_doc.html','r',encoding='utf-8') as file:
-    html_content=file.read()
+file_name = input("Введите название файла: ")
 
-soup=BeautifulSoup(html_content,'html.parser')
+try:
+    with open(file_name, 'r', encoding='utf-8') as file:
+        html_content = file.read()
+        soup = BeautifulSoup(html_content, 'html.parser')
+        pattern = r'\S+@\S+'
+        emails = re.findall(pattern, soup.getText())
 
-pattern=r'\S+@\S+'
-emails=re.findall(pattern,soup.getText())
 
+        for email in emails:
+            print(email)
 
-for email in emails:
-    print(email)
+except FileNotFoundError:
+    print(f"Файл '{file_name}' не найден.")
+except Exception as e:
+    print(f"Произошла ошибка: {e}")
